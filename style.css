@@ -1,0 +1,150 @@
+body {
+  background: #eeeded;
+  margin: 0;
+  padding: 0;
+}
+
+.mdl-layout__content {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.totalcost {
+        position: absolute;
+        bottom: 0;
+        }
+.rightfloat {
+  float: right;
+  padding: 30px;
+}
+
+td {
+  color: black;
+}
+
+th {
+  color: black;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+#text {
+  margin: 20px 0;
+}
+
+#slider {
+  width: 320px;
+}
+
+.mytext {
+  margin: 4px;
+}
+
+.hideme {
+  display: none;
+}
+
+.fullheight {
+  height: 100%;
+}
+
+.nomargin {
+  margin-bottom: 0px;
+  padding: 0;
+}
+
+.toptitle {
+  margin: 1rem;
+  position: relative;
+  float: left;
+}
+
+.filtered {
+  display: none !important;
+}
+
+.selected {
+  outline: 8px solid black;
+
+}
+
+.card {
+  background: #fff;
+  border-radius: 2px;
+  display: block;
+  float: left;
+  height: 300px;
+  padding: 10px;
+  margin: 1rem;
+  width: 300px;
+  overflow: visible;
+  position: relative;
+}
+
+.inactive {
+  color: gray;
+  text-decoration: line-through;
+}
+
+.card-1 {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.2s ease-in-out;
+}
+
+.card-1:hover {
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.19), 0 3px 7px rgba(0, 0, 0, 0.23);
+}
+
+.mdl-data-table th:first-of-type {
+  text-align: left;
+}
+
+.mdl-data-table {
+  float: left;
+}
+
+.fullwidth {
+  width: 100%; //fallback
+  width: 100vw;
+  float: right;
+  background-color: white;
+}
+
+#slider {}
+
+.card #inner-box {
+  background: #303F9F;
+  height: 100%;
+  width: 50%;
+  opacity: 0;
+  top: 0;
+  margin-left: -50%;
+  position: absolute;
+  padding: 0;
+  transition: opacity .2s;
+  text-align:right;
+}
+/* line 25, ../sass/style.scss */
+.card #inner-box li {
+  text-align:right !important;
+  margin: -25px 0;
+}
+
+span {
+  color: white !important;
+}
+
+
+/* line 34, ../sass/style.scss */
+.card:hover #inner-box {
+  opacity: 1;
+  transition: opacity .2s;
+}
+ul {
+  line-height:1px !important;
+}
