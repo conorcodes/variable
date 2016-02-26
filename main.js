@@ -161,7 +161,7 @@ $(document).ready(function() {
       }
 
     }
-    var thatresult = unique(thecombos);
+    //var thatresult = unique(thecombos);
     var theSVGs = document.getElementsByTagName('svg');
     for (var i = 0; i < theSVGs.length; i++) {
       theSVGs[i].removeAttribute("height");
