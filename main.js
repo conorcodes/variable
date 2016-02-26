@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+         var t0 = performance.now();
+
   var notification = document.querySelector('.mdl-js-snackbar');
 
   //slider
@@ -117,6 +119,7 @@ $(document).ready(function() {
   };
 
   everythingFunc('defaultSVG');
+  
   $('#mySVG').on('input propertychange', function() {
     everythingFunc('mySVG');
   });
@@ -207,4 +210,6 @@ $(document).ready(function() {
     return result;
   }
 
+      var t1 = performance.now();
+console.log("took " + (t1 - t0) + " milliseconds.") 
 });
