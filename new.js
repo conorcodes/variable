@@ -50,18 +50,24 @@ function importFromPaste(pasteField) {
     
     //import content from the textfield
     importedSVG = project.importSVG(pasteField.value);
-    pasteText.value = '';
+    pasteField.value = '';
+    everythingFunc(importedSVG, true);
 }
  
-function everythingFunc(svgID) {
-     var everythingT1 = performance.now();
+function everythingFunc(svgID, paste) {
+    var everythingT1 = performance.now();
+    var importedSVG;
 
     //store the SVG element
-    var svgElement = document.getElementById(svgID);
-    
-    //import the SVG element into the paper canvas
-    var importedSVG = project.importSVG(svgElement);
+    if (paste){
+        importedSVG = svgID;
+    }
+    else{
+        var svgElement = document.getElementById(svgID);
 
+        //import the SVG element into the paper canvas
+        importedSVG = project.importSVG(svgElement);
+    }
     //fit the SVG to the size of the canvas
     importedSVG.fitBounds(view.bounds);
     
@@ -112,6 +118,7 @@ function everythingFunc(svgID) {
     //get all of the combinations
     var comboT1 = performance.now();
     var allCombos = getAllCombinations(importedSVG, categoryList);
+    fixSVGs();
     var comboT2 = performance.now();
     console.log(comboT2-comboT1 + " milliseconds to create all combinations.");
 
@@ -172,7 +179,7 @@ function getAllCombinations(importedSVG, arraysToCombine) {
             svg.children[combo[item][0]].children[combo[item][1]].visible = true;
             turnedOn.push(svg.children[combo[item][0]].children[combo[item][1]]);
             
-            var nameAndCost = combo[item][1].split(",");
+            var nameAndCost = combo[item][1].split("-");
             var nameAndCategory = combo[item][0]+ ','+ nameAndCost[0];
             var category = combo[item][0];
             var name = nameAndCost[0];
@@ -186,7 +193,7 @@ function getAllCombinations(importedSVG, arraysToCombine) {
         var regex = new RegExp(',', 'g');
         idArray = idArray.replace(regex, '-');
         var newdiv = $('<div id="' + item + '" class="card card-1 generatedcard ' + idArray + '" style="display:none;">').appendTo('.page-content');
-                       var theSVG = project.exportSVG({asString: false});
+       var theSVG = project.exportSVG({asString: false});
      newdiv.append(theSVG);
                        $('<div class="rightfloat"><div class="totalcost"><h6>$' + totalCost +'</h6></div></div>'+'<div id="inner-box" class="info"><ul class="mdl-list">'+infoList.join("")+'</ul></div>' +'</div>').appendTo(newdiv);
      
@@ -199,6 +206,12 @@ function getAllCombinations(importedSVG, arraysToCombine) {
     
 //EVENTS
   
+    
+    
+//on paste
+    $('#mySVG').on('input propertychange', function() {
+    importFromPaste(document.getElementById('mySVG'))
+    });
     
 //When you move the slider, change the size of all of the combination divs    
 $("#slider").mousemove(function() {
