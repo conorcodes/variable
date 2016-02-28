@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
- var t0 = performance.now();
+ var t0 = window.performance.now();
 
 //MAIN
     
@@ -11,7 +11,7 @@ paper.setup(canvas);
   
 //process the embedded SVG
 everythingFunc('defaultSVG');
-var t1 = performance.now();
+var t1 = window.performance.now();
 console.log("took " + (t1 - t0) + " milliseconds.")       
     
     
@@ -50,12 +50,12 @@ function importFromPaste(pasteField) {
     
     //import content from the textfield
     importedSVG = project.importSVG(pasteField.value);
-    pasteField.value = '';
     everythingFunc(importedSVG, true);
+    pasteField.value = '';
 }
  
 function everythingFunc(svgID, paste) {
-    var everythingT1 = performance.now();
+    var everythingT1 = window.performance.now();
     var importedSVG;
 
     //store the SVG element
@@ -97,7 +97,7 @@ function everythingFunc(svgID, paste) {
             addRow(categoryName, optionName);
             
             //turn the visibility off, we'll turn it on later
-            theOption.visible = false;
+            //theOption.visible = false;
             
             //push an array to the child array containing the category and the option
             optionNames.push([categoryName,optionName]);
@@ -111,15 +111,15 @@ function everythingFunc(svgID, paste) {
       }
       categoryList.push(optionNames);
     }
-    var everythingT2 = performance.now();
+    var everythingT2 = window.performance.now();
     console.log(everythingT2-everythingT1 + " to process the SVG");
     
     
     //get all of the combinations
-    var comboT1 = performance.now();
+    var comboT1 = window.performance.now();
     var allCombos = getAllCombinations(importedSVG, categoryList);
     fixSVGs();
-    var comboT2 = performance.now();
+    var comboT2 = window.performance.now();
     console.log(comboT2-comboT1 + " milliseconds to create all combinations.");
 
   };
@@ -176,10 +176,11 @@ function getAllCombinations(importedSVG, arraysToCombine) {
         var costRemovedArr = [];
         var infoList = [];
         for (var item in combo) {
-            svg.children[combo[item][0]].children[combo[item][1]].visible = true;
+            //svg.children[combo[item][0]].children[combo[item][1]].visible = true;
+            svg.children[combo[item][0]].children[combo[item][1]].selected = true;
             turnedOn.push(svg.children[combo[item][0]].children[combo[item][1]]);
             
-            var nameAndCost = combo[item][1].split("-");
+            var nameAndCost = combo[item][1].split(",");
             var nameAndCategory = combo[item][0]+ ','+ nameAndCost[0];
             var category = combo[item][0];
             var name = nameAndCost[0];
@@ -193,13 +194,19 @@ function getAllCombinations(importedSVG, arraysToCombine) {
         var regex = new RegExp(',', 'g');
         idArray = idArray.replace(regex, '-');
         var newdiv = $('<div id="' + item + '" class="card card-1 generatedcard ' + idArray + '" style="display:none;">').appendTo('.page-content');
-       var theSVG = project.exportSVG({asString: false});
+     var selectedItems = project.selectedItems;  
+     var theSVG = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg">';
+     for (selectedItem in selectedItems){
+        theSVG = theSVG + selectedItems[selectedItem].exportSVG({asString: true});
+     }
+     theSVG = theSVG + '</svg>';
      newdiv.append(theSVG);
                        $('<div class="rightfloat"><div class="totalcost"><h6>$' + totalCost +'</h6></div></div>'+'<div id="inner-box" class="info"><ul class="mdl-list">'+infoList.join("")+'</ul></div>' +'</div>').appendTo(newdiv);
      
         newdiv.fadeIn(10);
         for (var option in turnedOn) {
-            turnedOn[option].visible = false;
+            //turnedOn[option].visible = false;
+            turnedOn[option].selected = false;
         }
 
   }
