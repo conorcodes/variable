@@ -70,6 +70,7 @@ function everythingFunc(svgID, paste) {
     }
     //fit the SVG to the size of the canvas
     importedSVG.fitBounds(view.bounds);
+    paper.view.update()
     
     //get the number of layers in the SVG
     var numLayers = importedSVG.children.length;
@@ -97,7 +98,7 @@ function everythingFunc(svgID, paste) {
             addRow(categoryName, optionName);
             
             //turn the visibility off, we'll turn it on later
-            //theOption.visible = false;
+            theOption.visible = false;
             
             //push an array to the child array containing the category and the option
             optionNames.push([categoryName,optionName]);
@@ -166,7 +167,15 @@ function getAllCombinations(importedSVG, arraysToCombine) {
           theSVGs[i].setAttribute("viewBox", "-5 0 315 315");
         }
     }
+   
     
+    function imageFromStorage(original) {
+  var image,
+      dataURI = original.toDataURL();
+    image = document.createElement('img');
+    image.src = dataURI;
+  return image;
+}
     
  function createCombos(svg, combo) {
 
@@ -176,8 +185,8 @@ function getAllCombinations(importedSVG, arraysToCombine) {
         var costRemovedArr = [];
         var infoList = [];
         for (var item in combo) {
-            //svg.children[combo[item][0]].children[combo[item][1]].visible = true;
-            svg.children[combo[item][0]].children[combo[item][1]].selected = true;
+            svg.children[combo[item][0]].children[combo[item][1]].visible = true;
+            //svg.children[combo[item][0]].children[combo[item][1]].selected = true;
             turnedOn.push(svg.children[combo[item][0]].children[combo[item][1]]);
             
             var nameAndCost = combo[item][1].split(",");
@@ -194,19 +203,32 @@ function getAllCombinations(importedSVG, arraysToCombine) {
         var regex = new RegExp(',', 'g');
         idArray = idArray.replace(regex, '-');
         var newdiv = $('<div id="' + item + '" class="card card-1 generatedcard ' + idArray + '" style="display:none;">').appendTo('.page-content');
-     var selectedItems = project.selectedItems;  
-     var theSVG = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg">';
-     for (selectedItem in selectedItems){
-        theSVG = theSVG + selectedItems[selectedItem].exportSVG({asString: true});
-     }
-     theSVG = theSVG + '</svg>';
-     newdiv.append(theSVG);
+//     var selectedItems = project.selectedItems;  
+  //   var theSVG = '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg">';
+    // for (selectedItem in selectedItems){
+    //    theSVG = theSVG + selectedItems[selectedItem].exportSVG({asString: true});
+    // }
+    // theSVG = theSVG + '</svg>';
+     var newCanvas = document.createElement('canvas');
+
+     newCanvas.width = canvas.width;
+     newCanvas.height = canvas.height;
+         paper.view.update()
+
+     var ctx = newCanvas.getContext("2d");
+     ctx.drawImage(canvas, 0,0);
+    // var newCanvas = imageFromStorage(canvas);
+     $(newCanvas).appendTo(newdiv);
+     //var canvasElement = document.getElementById(costRemovedArr.join('-').replace(regex,"-"));
+     
+
+     //newdiv.append(theSVG);
                        $('<div class="rightfloat"><div class="totalcost"><h6>$' + totalCost +'</h6></div></div>'+'<div id="inner-box" class="info"><ul class="mdl-list">'+infoList.join("")+'</ul></div>' +'</div>').appendTo(newdiv);
      
         newdiv.fadeIn(10);
         for (var option in turnedOn) {
-            //turnedOn[option].visible = false;
-            turnedOn[option].selected = false;
+            turnedOn[option].visible = false;
+            //turnedOn[option].selected = false;
         }
 
   }
